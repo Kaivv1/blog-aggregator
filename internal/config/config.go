@@ -1,6 +1,8 @@
 package config
 
-import "github.com/Kaivv1/blog-aggregator/internal/database"
+import (
+	"github.com/Kaivv1/blog-aggregator/internal/database"
+)
 
 type ApiConfig struct {
 	DB *database.Queries

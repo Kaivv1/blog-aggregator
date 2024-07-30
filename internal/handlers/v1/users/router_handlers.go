@@ -2,6 +2,7 @@ package users
 
 import (
 	"github.com/Kaivv1/blog-aggregator/internal/config"
+	"github.com/Kaivv1/blog-aggregator/internal/handlers/v1/auth"
 	"github.com/go-chi/chi"
 )
 
@@ -16,10 +17,11 @@ func newUsersHandler(cfg *config.ApiConfig) *usersHandler {
 }
 
 func NewUsersRouter(cfg *config.ApiConfig) *chi.Mux {
+	m := auth.NewMiddleware(cfg)
 	usersRouter := chi.NewRouter()
 	usersHandler := newUsersHandler(cfg)
-	usersRouter.Post("/", usersHandler.createUser)
-	usersRouter.Get("/", usersHandler.getUser)
+	usersRouter.Post("/", usersHandler.CreateUser)
+	usersRouter.Get("/", m.AuthMiddleware(usersHandler.GetUser))
 
 	return usersRouter
 }

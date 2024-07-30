@@ -8,7 +8,7 @@ import (
 
 	"github.com/Kaivv1/blog-aggregator/internal/config"
 	"github.com/Kaivv1/blog-aggregator/internal/database"
-	v1 "github.com/Kaivv1/blog-aggregator/internal/handlers/v1"
+	"github.com/Kaivv1/blog-aggregator/internal/handlers/v1/feeds"
 	"github.com/Kaivv1/blog-aggregator/internal/handlers/v1/users"
 	"github.com/go-chi/chi"
 	"github.com/joho/godotenv"
@@ -16,7 +16,6 @@ import (
 )
 
 func main() {
-
 	godotenv.Load()
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -30,14 +29,14 @@ func main() {
 	v1Router := chi.NewRouter()
 	router.Mount("/v1", v1Router)
 
-	v1Router.Get("/healthz", v1.HandleHealthz)
-	v1Router.Get("/err", v1.HandleErr)
 	db, err := sql.Open("postgres", dbUrl)
 
 	config := config.NewConfig(database.New(db))
 	usersRouter := users.NewUsersRouter(config)
+	feedsRouter := feeds.NewFeedsRouter(config)
 
 	v1Router.Mount("/users", usersRouter)
+	v1Router.Mount("/feeds", feedsRouter)
 
 	if err != nil {
 		log.Fatal("cannot connect to db")

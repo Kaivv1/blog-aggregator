@@ -18,7 +18,7 @@ type User struct {
 	Api_Key    string    `json:"api_key"`
 }
 
-func remodelUser(user db.User) User {
+func RemodelUser(user db.User) User {
 	return User{
 		ID:         user.ID.String(),
 		Created_At: user.CreatedAt,
@@ -28,7 +28,7 @@ func remodelUser(user db.User) User {
 	}
 }
 
-func (u *usersHandler) createUser(w http.ResponseWriter, r *http.Request) {
+func (u *usersHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Name string `json:"name"`
 	}
