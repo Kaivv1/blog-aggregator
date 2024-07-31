@@ -6,10 +6,6 @@ import (
 	"github.com/Kaivv1/blog-aggregator/pkg/utils"
 )
 
-// func mapFeeds() {
-
-// }
-
 func (f *feedsHandler) GetFeeds(w http.ResponseWriter, r *http.Request) {
 	feeds, err := f.config.DB.GetFeeds(r.Context())
 	if err != nil {

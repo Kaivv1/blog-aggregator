@@ -55,6 +55,16 @@ func (f *feedsHandler) CreateFeed(w http.ResponseWriter, r *http.Request, user d
 		utils.RespondWithError(w, http.StatusInternalServerError, "Error while adding new feed to db")
 		return
 	}
-
+	_, err = f.config.DB.CreateFeedFollow(r.Context(), database.CreateFeedFollowParams{
+		ID:        uuid.New(),
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
+		UserID:    user.ID,
+		FeedID:    feed.ID,
+	})
+	if err != nil {
+		utils.RespondWithError(w, http.StatusInternalServerError, "Error while adding new feed_follow to db")
+		return
+	}
 	utils.RespondWithJSON(w, http.StatusCreated, RemodelFeed(feed))
 }

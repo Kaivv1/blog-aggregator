@@ -32,6 +32,7 @@ func (m *middleware) AuthMiddleware(handler nextHandler) http.HandlerFunc {
 			utils.RespondWithError(w, http.StatusNotFound, "no user matches the key")
 			return
 		}
+
 		handler(w, r, user)
 	}
 }
